@@ -3,7 +3,7 @@ const studentItems = document.getElementsByClassName('student-item');
 const studentNames = document.querySelectorAll('.student-details h3');
 const page = document.getElementsByClassName('page')[0];
 const header = document.getElementsByClassName('page-header')[0];
-
+const studentArray = [];
 
 
 function initialStudents() {
@@ -62,11 +62,46 @@ function paginate(students) {
         button.appendChild(buttonLink);
         pageList.appendChild(button);
     }
+
+
+    //Lets add event listeners to the pagination!
+    let pageLinks = document.querySelectorAll('.pagination ul li a');
+    let pageCount = pageLinks.length;
+
+
+    for (let i = 0; i < pageCount; i++) {
+        let lowEnd = i * 10;
+        let highEnd = i * 10 + 10;
+
+        pageLinks[i].addEventListener('click', () => {
+            for (let k = 0; k < students.length; k += 1) {
+                if (k < highEnd && k >= lowEnd) {
+                    studentItems[students[k]].style.display = 'block';
+                } else {
+                    studentItems[students[k]].style.display = 'none';
+                }
+            }
+        });
+
+
+    }
+
+    for (let i = 0; i < students.length;i++) {
+        if (i < 10 && i >= 0) {
+            studentItems[students[i]].style.display = 'block';
+        } else {
+            studentItems[students[i]].style.display = 'none';
+        }
+    }
+
 }
 
+for (i = 0; i < studentItems.length; i++) {
+    studentArray.push(i);
+}
 
 initialStudents();
-paginate(studentItems);
+paginate(studentArray);
 
 
 
@@ -90,27 +125,16 @@ search.appendChild(searchBttn);
 
 
 
-//Lets add event listeners to the pagination!
-let pageLinks = document.querySelectorAll('.pagination ul li a');
-let pageCount = pageLinks.length;
 
-    
-for (let i = 0; i < pageCount; i++) {
-    let lowEnd = i * 10;
-    let highEnd = i * 10 + 10;
+
+reset.addEventListener('click', () => {
+
+    initialStudents();
+    paginate(studentArray);
 
 
 
-    pageLinks[i].addEventListener('click', () => {
-        for (let k = 0; k < studentItems.length; k += 1) {
-            if (k < highEnd && k >= lowEnd) {
-                studentItems[k].style.display = 'block';
-            } else {
-                studentItems[k].style.display = 'none';
-            }
-        }
-    });
-}
+});
 
 //When search button is clicked, if the terms of the search return any result, display them and hide the other student records.
 
@@ -129,7 +153,11 @@ searchBttn.addEventListener('click', () => {
             for (let i = 0; i < studentItems.length; i++) {
                 if (studentNames[i].textContent.includes(searchValue)) {
                     matches.push(i);
-                    studentItems[i].style.display = 'block';
+                    console.log(i); 
+                    if (matches < 11) {
+                        studentItems[i].style.display = 'block';
+                    }
+                    
                 } else {
                     studentItems[i].style.display = 'none';
                 }
