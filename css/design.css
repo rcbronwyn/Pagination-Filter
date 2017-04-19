@@ -121,3 +121,24 @@ body{
     .hidden{
         display: none;
     }
+
+
+    .reset-button{
+        margin-right: 5px;
+    }
+
+    .pagination ul li{
+        margin-right: 5px;
+    }
+    .pagination ul li:last-child {
+        margin-right: 0;
+    }
+
+    h1{
+        font-size: 36px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    p{
+        font-size: 18px;
+    }
