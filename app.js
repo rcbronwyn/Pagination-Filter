@@ -92,7 +92,6 @@ searchBttn.addEventListener('click', () => {
         }
     }
 
-
 });
 
 
@@ -134,46 +133,49 @@ function paginate(students) {
     //If the pagination already exists, delete the pagination.  
     removeQuery('.pagination');
 
-    //Create the pagination html up until the list container (ul)
-    let pagination = document.createElement('div');
-    pagination.className = "pagination";
-    let pageList = document.createElement('ul');
+    //If there are more than 10 students, do the following...
+    if (students.length > 10) {
 
-    //Insert the pagination html.
-    page.appendChild(pagination);
-    pagination.appendChild(pageList);
+        //Create the pagination html up until the list container (ul)
+        let pagination = document.createElement('div');
+        pagination.className = "pagination";
+        let pageList = document.createElement('ul');
+
+        //Insert the pagination html.
+        page.appendChild(pagination);
+        pagination.appendChild(pageList);
 
 
-    //Create the number of buttons needed to represent the amount of student records being looked for, and append it to the list container (ul).
-    for (let i = 0; i < students.length / 10; i += 1) {
-        const button = document.createElement('li');
-        const buttonLink = document.createElement('a');
-        buttonLink.textContent = i + 1;
-        buttonLink.href = "#";
+        //Create the number of buttons needed to represent the amount of student records being looked for, and append it to the list container (ul).
+        for (let i = 0; i < students.length / 10; i += 1) {
+            const button = document.createElement('li');
+            const buttonLink = document.createElement('a');
+            buttonLink.textContent = i + 1;
+            buttonLink.href = "#";
 
-        button.appendChild(buttonLink);
-        pageList.appendChild(button);
+            button.appendChild(buttonLink);
+            pageList.appendChild(button);
+        }
+
+
+        //Lets add event listeners to the pagination!
+        let pageLinks = document.querySelectorAll('.pagination ul li a');
+        let pageCount = pageLinks.length;
+
+        //For each page that exists, add an event listener that calls the displayStudents() with a calculated lowEnd and highEnd based off of the number of pages
+        for (let i = 0; i < pageCount; i++) {
+            let lowEnd = i * 10;
+            let highEnd = i * 10 + 10;
+
+            pageLinks[i].addEventListener('click', () => {
+                displayStudents(students, lowEnd, highEnd);
+            });
+
+
+        }
+        //Calls the displayStudents() to show the first 10 entries that are being looked for (either by search or default), putting the user on the "first" page.
+        displayStudents(students, 0, 10);
     }
-
-
-    //Lets add event listeners to the pagination!
-    let pageLinks = document.querySelectorAll('.pagination ul li a');
-    let pageCount = pageLinks.length;
-
-    //For each page that exists, add an event listener that calls the displayStudents() with a calculated lowEnd and highEnd based off of the number of pages
-    for (let i = 0; i < pageCount; i++) {
-        let lowEnd = i * 10;
-        let highEnd = i * 10 + 10;
-
-        pageLinks[i].addEventListener('click', () => {
-            displayStudents(students, lowEnd, highEnd);
-        });
-
-
-    }
-    //Calls the displayStudents() to show the first 10 entries that are being looked for (either by search or default), putting the user on the "first" page.
-    displayStudents(students, 0, 10);
-
 }
 
 // initialStudents() is a function the sets the display of the students and pagination to it's default form, showing the first ten student items.
